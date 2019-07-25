@@ -15,8 +15,6 @@ module.exports = function validateusername(Item) {
         errors.username = "username is required";
     }
 
-
-
     return {
         errors,
         isValid: isEmpty(errors)
