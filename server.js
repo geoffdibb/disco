@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 
-const item = require("./models");
+const item = require("./routes/models");
 
 
 let uri = 'mongodb://localhost:27017/example';
@@ -19,7 +19,7 @@ mongoose.connect(uri, opts).then(
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
-app.use("/models", item);
+app.use("/routes/models", item);
 
 const port = process.env.PORT || 5000;
 

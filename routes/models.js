@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
 const Item = require("./mongoschema.js")
+const validateusername = require("./modelsvalidation")
 
 
+//getall
 router.get("/all", (req, res) => {
   const errors = {};
   Item.find()
@@ -18,17 +20,25 @@ router.get("/all", (req, res) => {
 });
 
 
+//create
 router.post("/addItem", (req, res) => {
+  const { errors, isValid } = validateusername(req.body);
+  if (!isValid) {
+return res.status(400).json(errors);
+  }
     const item = new Item({
         username: req.body.username,
         contents: req.body.contents
-})
+});
 item.save().then(() =>{
       res.json(item)
+
 
 console.log('complete')});
 });
 
+
+//update
 router.put("/updatename", (req, res) => {
   Item.replaceOne({'username': req.body.username},
 {'username': req.body.replacementname, "contents": req.body.contents})
@@ -36,7 +46,7 @@ router.put("/updatename", (req, res) => {
               res.json(Item)
     })})
 
-
+//delete
 router.delete("/delete", (req, res) => {
   Item.deleteOne({'username': req.body.username})
   .then(({ ok, n }) => {
